@@ -9,23 +9,30 @@
 
 // Variables
 let score = 0;
-
+let timeLeft = 60;
 
 
 // HTML DOM
 const button1 = document.getElementById("button1");
 const scoreDisplay = document.getElementById("scoreDisplay");
-
+const timerDisplay = document.getElementById("timerDisplay");
 
 // UI functions / events
 button1.addEventListener("click", () => {
   increaseScore();
 })
 
+setInterval(countdown, 1000);
 
 
 // Functions
 function increaseScore() {
   score++;
   scoreDisplay.innerText = score;
+}
+
+function countdown() {
+  timeLeft--;
+  timerDisplay.innerText = timeLeft;
+
 }
