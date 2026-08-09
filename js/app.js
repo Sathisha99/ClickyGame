@@ -19,6 +19,7 @@ let interval = null;
 
 // HTML DOM
 const button1 = document.getElementById("button1");
+const button2 = document.getElementById("button2");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const timerDisplay = document.getElementById("timerDisplay");
 const label1 = document.getElementById("label1");
@@ -35,9 +36,13 @@ button1.addEventListener("click", () => {
   }
 })
 
+button2.addEventListener("click", () => {
+  submitHighScore();
+})
+
 input1.style.display = "none";
 label1.style.display = "none";
-
+button2.style.display = "none";
 
 // Functions
 function increaseScore() {
@@ -64,6 +69,11 @@ function endGame() {
   gameEnded = true;
   clearInterval(interval);
   button1.style.display = "none";
+  button2.style.display = "block";
   input1.style.display = "block";
   label1.style.display = "block";
+}
+
+function submitHighScore() {
+  console.log(input1.value);
 }
