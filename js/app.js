@@ -12,6 +12,10 @@ let score = 0;
 let timeLeft = 60;
 let gameStarted = false;
 let gameEnded = false;
+let interval = null;
+
+
+
 
 // HTML DOM
 const button1 = document.getElementById("button1");
@@ -53,4 +57,5 @@ function startGame() {
 
 function endGame() {
   gameEnded = true;
+  clearInterval(interval);
 }
