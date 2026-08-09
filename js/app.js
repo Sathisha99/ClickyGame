@@ -10,7 +10,8 @@
 // Variables
 let score = 0;
 let timeLeft = 60;
-
+let gameStarted = false;
+let gameEnded = false;
 
 // HTML DOM
 const button1 = document.getElementById("button1");
@@ -19,11 +20,15 @@ const timerDisplay = document.getElementById("timerDisplay");
 
 // UI functions / events
 button1.addEventListener("click", () => {
-  increaseScore();
+  if (!gameEnded) {
+    increaseScore();
+  }
+
+  if (!gameStarted) {
+    startGame();
+  }
+
 })
-
-setInterval(countdown, 1000);
-
 
 // Functions
 function increaseScore() {
@@ -35,4 +40,17 @@ function countdown() {
   timeLeft--;
   timerDisplay.innerText = timeLeft;
 
+  if (timeLeft <= 0) {
+    timerDisplay.innerText = 0;
+    endGame();
+  }
+}
+
+function startGame() {
+  setInterval(countdown, 1000);
+  gameStarted = true;
+}
+
+function endGame() {
+  gameEnded = true;
 }
