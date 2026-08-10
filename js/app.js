@@ -14,6 +14,7 @@ let gameStarted = false;
 let gameEnded = false;
 let interval = null;
 
+const postUrl = "https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/";
 
 
 
@@ -74,6 +75,18 @@ function endGame() {
   label1.style.display = "block";
 }
 
-function submitHighScore() {
-  console.log(input1.value);
+async function submitHighScore() {
+  const playerName = input1.value;
+  const currentScore = score;
+
+  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+    method: "POST",
+    body: JSON.stringify({
+      name: playerName,
+      score: currentScore
+    })
+  });
+
+  console.log(response);
+  alert("Score submitted successfully!");
 }
