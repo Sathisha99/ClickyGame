@@ -15,7 +15,7 @@ let gameEnded = false;
 let interval = null;
 
 const postUrl = "https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/";
-
+const getUrl = "https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec";
 
 
 // HTML DOM
@@ -26,6 +26,10 @@ const timerDisplay = document.getElementById("timerDisplay");
 const label1 = document.getElementById("label1");
 const input1 = document.getElementById("name");
 const messageDisplay = document.getElementById("messageDisplay");
+const scoreboardContainer = document.getElementById("scoreboardContainer");
+const currentScoreDisplay = document.getElementById("currentScoreDisplay");
+const scoreboardList = document.getElementById("scoreboardList");
+
 
 // UI functions / events
 button1.addEventListener("click", () => {
@@ -45,6 +49,7 @@ button2.addEventListener("click", () => {
 input1.style.display = "none";
 label1.style.display = "none";
 button2.style.display = "none";
+scoreboardContainer.style.display = "none";
 
 // Functions
 function increaseScore() {
@@ -80,7 +85,6 @@ async function submitHighScore() {
   let currentScore = score;
   let playerName = input1.value;
 
-// Stop the button from being clicked again
   button2.disabled = true;
 
   const response = await fetch(postUrl, {
@@ -95,7 +99,34 @@ async function submitHighScore() {
 
   if (response.ok) {
     messageDisplay.innerText = "Score submitted successfully.";
+    getScoreBoardData();
   } else {
     messageDisplay.innerText = "Score could not be submitted.";
+    button2.disabled = false;
   }
+}
+function getScoreBoardData() {
+  fetch(getUrl)
+    .then(response => response.json())
+    .then(data => {
+      data.sort((a, b) => Number(b.score) - Number(a.score));
+
+      const topScores = data.slice(0, 10);
+
+      currentScoreDisplay.innerText = "Your score: " + input1.value + " - " + score;
+
+      scoreboardList.innerHTML = "";
+
+      topScores.forEach(player => {
+        const listItem = document.createElement("li");
+        listItem.innerText = player.name + " - " + player.score;
+        scoreboardList.appendChild(listItem);
+      });
+
+      scoreboardContainer.style.display = "block";
+    })
+    .catch(error => {
+      console.error("Fetch error:", error);
+      messageDisplay.innerText = "Score submitted, but scoreboard could not be loaded.";
+    });
 }
