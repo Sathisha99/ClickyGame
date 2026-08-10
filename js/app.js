@@ -25,6 +25,7 @@ const scoreDisplay = document.getElementById("scoreDisplay");
 const timerDisplay = document.getElementById("timerDisplay");
 const label1 = document.getElementById("label1");
 const input1 = document.getElementById("name");
+const messageDisplay = document.getElementById("messageDisplay");
 
 // UI functions / events
 button1.addEventListener("click", () => {
@@ -76,10 +77,13 @@ function endGame() {
 }
 
 async function submitHighScore() {
-  const playerName = input1.value;
-  const currentScore = score;
+  let currentScore = score;
+  let playerName = input1.value;
 
-  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+// Stop the button from being clicked again
+  button2.disabled = true;
+
+  const response = await fetch(postUrl, {
     method: "POST",
     body: JSON.stringify({
       name: playerName,
@@ -88,5 +92,10 @@ async function submitHighScore() {
   });
 
   console.log(response);
-  alert("Score submitted successfully!");
+
+  if (response.ok) {
+    messageDisplay.innerText = "Score submitted successfully.";
+  } else {
+    messageDisplay.innerText = "Score could not be submitted.";
+  }
 }
